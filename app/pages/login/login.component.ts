@@ -7,6 +7,8 @@ import { Color } from "color";
 import { View } from "ui/core/view";
 import { setHintColor } from "../../utils/hint-util";
 import { TextField } from "ui/text-field";
+import { ConnectivityService, ConnectionType } from "../../shared/connectivity.service";
+import { connectionType } from "tns-core-modules/connectivity/connectivity";
 
 @Component({
   selector: "my-app",
@@ -22,7 +24,7 @@ export class LoginComponent implements OnInit {
   @ViewChild("email") email: ElementRef;
   @ViewChild("password") password: ElementRef;
 
-  constructor(private router: Router, private userService: UserService, private page: Page) {
+  constructor(private router: Router, private userService: UserService, private page: Page, private connectivityService: ConnectivityService) {
     this.user = new User();
   }
   submit() {
