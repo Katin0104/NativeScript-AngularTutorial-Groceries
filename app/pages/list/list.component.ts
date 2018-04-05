@@ -3,6 +3,7 @@ import { TextField } from "ui/text-field";
 import { Grocery } from "../../shared/grocery/grocery";
 import { GroceryListService } from "../../shared/grocery/grocery-list.service";
 import * as SocialShare from "nativescript-social-share";
+import { ConnectivityService, ConnectionType } from "../../shared/connectivity.service";
 
 @Component({
   selector: "list",
@@ -19,10 +20,26 @@ export class ListComponent implements OnInit {
 
   @ViewChild("groceryTextField") groceryTextField: ElementRef;
 
-  constructor(private groceryListService: GroceryListService) {}
+  constructor(private groceryListService: GroceryListService, private connectivityService: ConnectivityService) {
+    this.groceryListService.refreshList.subscribe((message: string) => {
+      console.log('GOT: ' + message);
+      this.initList();
+    });
+  }
 
   ngOnInit() {
+
+    if (this.connectivityService.connectionType != ConnectionType.NONE) {
+      this.groceryListService.syncGroceries();
+    }
+
+    this.initList();
+  }
+
+  initList() {
+    console.log('Init List');
     this.isLoading = true;
+    this.groceryList = [];
     this.groceryListService.load()
       .subscribe(loadedGroceries => {
         loadedGroceries.forEach((groceryObject) => {

@@ -26,6 +26,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router, private userService: UserService, private page: Page, private connectivityService: ConnectivityService) {
     this.user = new User();
+    this.user.email = 'karin.w@outlook.de';
+    this.user.password = '123';
   }
   submit() {
     if (!this.user.isValidEmail()) {
@@ -42,7 +44,10 @@ export class LoginComponent implements OnInit {
     this.userService.login(this.user)
       .subscribe(
         () => this.router.navigate(["/list"]),
-        (error) => alert("Unfortunately we could not find your account.")
+        (error) => {
+          alert("Unfortunately we could not find your account. But there is cached data.");
+          this.router.navigate(["/list"]);
+        }
       );
   }
   signUp() {
