@@ -1,0 +1,11 @@
+*.suo
+bin
+obj
+*.user
+.vs
+*.lock.json
+packages/
+node_modules
+bower_components
+*.log
+platforms/
